@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "tp8-projeto-block-react-native",
+    "slug": "snack-81ab226a-703f-4a34-94f4-bc4bfb8d91e7",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "Lista de livro em React Native - TP 8:\n* US Visualizar Lista de Livros Cadastrados;\n* US Filtrar lista de livros;\n* US Visualizar Detalhes de um Livro Selecionado."
+  }
+}
