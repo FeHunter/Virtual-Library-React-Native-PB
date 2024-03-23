@@ -26,8 +26,7 @@ export function RegisterImage() {
     if (camera) {
       const picture = await camera.takePictureAsync();
       setPhotoUri(picture.uri);
-      setPhotos(prevPhotos => [...prevPhotos, picture.uri]);
-      alert("Photo captured");
+      setPhotos(photos => [...photos, picture.uri]);
     }
   };
 
@@ -43,15 +42,20 @@ export function RegisterImage() {
         type={type}
         ref={ref => setCamera(ref)}
       />
-      <Image 
-        source={{ uri: photoUri }} 
-        style={{ width: 200, height: 200, resizeMode: "contain" }} 
-      />
+      {/* {photoUri != null ?
+        <Image 
+          source={{ uri: photoUri }} 
+          style={styles.lastPic} 
+        />
+        :
+        ''
+      } */}
       <Pressable onPress={takePicture}>
         <Text style={styles.button}>Take Picture</Text>
       </Pressable>
 
-      <View style={{ height: 200 }}>
+      <View style={styles.gallary}>
+        <Text style={styles.title}>My Photos</Text>
         <FlatList
           data={photos}
           keyExtractor={(item, index) => index.toString()}
@@ -68,19 +72,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    height: 400,
+    height: 200,
   },
   title: {
     fontSize: 16,
     textAlign: 'center',
-    marginVertical: 10,
+    marginVertical: 5,
   },
   cameraView: {
     flex: 1,
-    width: '70%',
+    width: '100%',
     height: 100,
     borderWidth: 2,
     borderColor: 'black',
+    resizeMode: 'contain',
+  },
+  lastPic: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
   },
   button: {
     width: '100%',
@@ -90,9 +100,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 50,
   },
+  gallary: {
+    width: '100%',
+    height: 450,
+  },
   imageGallery: {
-    width: 200,
-    height: 200,
+    width: '100%',
+    height: 400,
     resizeMode: 'contain',
   },
 });
