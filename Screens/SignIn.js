@@ -1,21 +1,24 @@
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import firebase from '../Assets/Firebase';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import Routes from '../Assets/Routes';
 
-export function SignIn() {
+export function SignIn({navigation}) {
 
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const [userAuth, setUserAuth] = useState(false);
 
   function login (){
     setIsLoading(true);
     const auth = getAuth(firebase);
     signInWithEmailAndPassword(auth, userEmail, userPassword)
     .then((credentials) => {
-      console.log(credentials.user);
+      // console.log(credentials.user);
+      setUserAuth(true);
       setStatus("Logado com sucesso!");
     })
     .catch((error) => {
@@ -27,6 +30,14 @@ export function SignIn() {
       setIsLoading(false);
     });
   }
+
+  useEffect(()=>{
+    if (userAuth){
+      setTimeout(() => {
+        navigation.navigate(Routes.home, {userAuth});
+      }, 1000);
+    }
+  }, [userAuth]);
 
   return (
     <View style={styles.container}>
@@ -41,6 +52,11 @@ export function SignIn() {
         }}
       />
       {status !== '' && <Text style={styles.status}>{status}</Text>}
+      <Button
+        title='Create a account'
+        color='black'
+        onPress={()=>{navigation.navigate(Routes.signUpPage)}}
+      />
     </View>
   );
 }

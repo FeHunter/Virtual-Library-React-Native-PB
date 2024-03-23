@@ -1,6 +1,7 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 
 // Screens
+import { Home } from './Screens/Home';
 import { BookList } from './Screens/BookList';
 import { BookCardDetails } from './components/BookCardDetails';
 import { SignIn } from './Screens/SignIn';
@@ -17,8 +18,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={Routes.signInPage}>
-            <Stack.Screen name={Routes.home} component={BookList} />
+        <Stack.Navigator initialRouteName={Routes.home}>
+            <Stack.Screen name={Routes.home} component={Home} />
+            <Stack.Screen name={Routes.bookList} component={BookList} />
             <Stack.Screen name={Routes.bookDetails} component={BookCardDetails} />
             <Stack.Screen name={Routes.signInPage} component={SignIn} />
             <Stack.Screen name={Routes.signUpPage} component={SignUp} />

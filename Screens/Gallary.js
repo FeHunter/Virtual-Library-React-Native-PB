@@ -1,4 +1,5 @@
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, Button, Image, FlatList, StyleSheet } from 'react-native';
+import Routes from '../Assets/Routes';
 
 const gallary = [
   "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg",
@@ -12,25 +13,28 @@ const gallary = [
   
 ]
 
-export function Gallary (){
+export function Gallary ({navigation}){
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My book's gallary</Text>
-      <View style={styles.imgContainer}>
+      <Button title='Take new pictures' color='black' onPress={()=>{navigation.navigate(Routes.registerImage)}} />
+      <ScrollView style={styles.imgContainer}>
         <FlatList
+          style={{height: '100%'}}
           data={gallary}
           keyExtractor={(item, index) => index.toString()}
           renderItem={ ({item}) => {
             return <Image source={{uri: item}} style={styles.image} />
           } }
         />
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: '100%',
     height: '100%',
   },
@@ -40,11 +44,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   imgContainer: {
-    height: 800,
+    height: 700,
   },
   image: {
     width: '100%',
     height: 200,
+    marginVertical: 5,
     resizeMode: 'contain'
   }
 });

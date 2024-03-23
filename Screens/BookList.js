@@ -4,6 +4,7 @@ import { BookCard } from '../components/BookCard';
 import { SearchBar } from '../components/SearchBar';
 
 export function BookList({ navigation }) {
+
   const urlAPI = 'https://t3t4-dfe-pb-grl-m1-default-rtdb.firebaseio.com';
   const resource = '/books.json';
 

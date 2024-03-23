@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebase from '../Assets/Firebase';
+import Routes from '../Assets/Routes';
 
-export function SignUp() {
+export function SignUp({navigation}) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const [userAuth, setUserAuth] = useState(false);
 
   function verificarUser() {
     setIsLoading(true);
     const auth = getAuth(firebase);
     createUserWithEmailAndPassword(auth, userEmail, userPassword)
       .then(credentials => {
-        console.log(credentials.user);
+        // console.log(credentials.user);
+        setUserAuth(true);
         setStatus("Cadastrado com sucesso!");
       })
       .catch(error => {
@@ -24,6 +27,14 @@ export function SignUp() {
         setIsLoading(false);
       });
   }
+
+  useEffect(()=>{
+    if (userAuth){
+      setTimeout(() => {
+        navigation.navigate(Routes.home, {userAuth});
+      }, 1000);
+    }
+  }, [userAuth]);
 
   return (
     <View style={styles.container}>
@@ -45,6 +56,11 @@ export function SignUp() {
         color="black"
         onPress={verificarUser}
       />
+      <Button
+        title='Login'
+        color='black'
+        onPress={()=>{navigation.navigate(Routes.signInPage)}}
+      />
       {status !== '' && <Text style={styles.status}>{status}</Text>}
     </View>
   );
@@ -52,13 +68,14 @@ export function SignUp() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    width: '100%',
+    height: 200,
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
-    marginVertical: 20,
+    fontSize: '1.2em',
+    marginVertical: 10,
   },
   status: {
     fontSize: 20,

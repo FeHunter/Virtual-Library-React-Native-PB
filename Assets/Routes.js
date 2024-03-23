@@ -1,5 +1,6 @@
 const Routes = {
-  home: 'Lista de livros',
+  home: 'Home',
+  bookList: 'Lista de livros',
   bookDetails: 'Mais detalhes',
   signInPage: 'SignIn',
   signUpPage: 'SignUp',
