@@ -26,6 +26,19 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Lista de livro em React Native - TP 8:\n* US Visualizar Lista de Livros Cadastrados;\n* US Filtrar lista de livros;\n* US Visualizar Detalhes de um Livro Selecionado."
+    "description": "Lista de livro em React Native - TP 8:\n* US Visualizar Lista de Livros Cadastrados;\n* US Filtrar lista de livros;\n* US Visualizar Detalhes de um Livro Selecionado.",
+    "expo": {
+      "plugins": [
+        [
+          "expo-camera",
+          {
+            "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+            "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+            "recordAudioAndroid": true
+          }
+        ]
+      ]
+    }
   }
+  
 }
