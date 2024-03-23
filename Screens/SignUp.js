@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebase from '../Assets/Firebase';
@@ -21,6 +21,11 @@ export function SignUp({navigation}) {
         setStatus("Cadastrado com sucesso!");
       })
       .catch(error => {
+        if (error.message === "Firebase: Error (auth/email-already-in-use)."){
+          return setStatus("Email já cadastrado");
+        }else if (error.message === "Firebase: Error (auth/invalid-email)."){
+          return setStatus("Email ou Senha icorreto");
+        }
         setStatus(error.message);
       })
       .finally(() => {

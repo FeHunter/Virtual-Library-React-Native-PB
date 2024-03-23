@@ -1,28 +1,66 @@
-import { View, ScrollView, Text, Button, Image, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, Text, Image, FlatList, StyleSheet, Pressable, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Routes from '../Assets/Routes';
+import FirebaseRoutes from '../Assets/FirebaseRoutes';
 
-const gallary = [
+const emptyGallary = [
   "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg",
   "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg",
   "https://images.pexels.com/photos/574087/pexels-photo-574087.jpeg",
-  "https://images.pexels.com/photos/3987066/pexels-photo-3987066.jpeg",
-  "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg",
-  "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg",
-  "https://images.pexels.com/photos/574087/pexels-photo-574087.jpeg",
-  "https://images.pexels.com/photos/3987066/pexels-photo-3987066.jpeg",
-  
-]
+];
+
 
 export function Gallary ({navigation}){
+
+  const [gallary, setGallary] = useState([]);
+
+  useEffect(()=>{
+    fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`)
+    .then(res => {return res.json()})
+    .then(res => res !== null ? setGallary(Object.values(res)) : setGallary(emptyGallary))
+    .catch(error => {
+      console.log(error.message);
+      setGallary(emptyGallary);
+    })
+  }, []);
+
+  function convertData(data){
+    const ids = Object.keys(data);
+    const objs = Object.values(data);
+    return objs.map((obj, i) => {
+      return { id: ids[i], ...obj };
+    });
+  }
+
+  // Orientation
+  const [horizontal, setHorizontal] = useState(false);
+  useEffect(()=>{
+    const onChange = ({window: {width, height}}) => {
+      setHorizontal(width > height ? true : false);
+    }
+  
+    Dimensions.addEventListener('change', onChange);
+    return () => {
+      Dimensions.removeEventListener('change', onChange);
+    }
+  }, []);
+
+  console.log(gallary);
+  console.log(convertData(gallary));
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My book's gallary</Text>
-      <Button title='Take new pictures' color='black' onPress={()=>{navigation.navigate(Routes.registerImage)}} />
-      <ScrollView style={styles.imgContainer}>
+      <Text style={styles.title}>Minha galeria</Text>
+      <Pressable style={styles.button} onPress={()=>{navigation.navigate(Routes.registerImage)}}>
+        <Text style={styles.buttonText}>Tirar novas fotos</Text>
+        <Icon name='camera' size={20} color={'white'} />
+      </Pressable>
+      <ScrollView contentContainerStyle={[styles.imgContainer, horizontal && { flexDirection: 'row' }]}>
         <FlatList
-          style={{height: '100%'}}
           data={gallary}
           keyExtractor={(item, index) => index.toString()}
+          horizontal={horizontal}
           renderItem={ ({item}) => {
             return <Image source={{uri: item}} style={styles.image} />
           } }
@@ -39,7 +77,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: '1.2em',
+    fontSize: 20,
     textAlign: 'center',
     marginVertical: 5,
   },
@@ -48,8 +86,21 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 200,
-    marginVertical: 5,
-    resizeMode: 'contain'
-  }
+    height: 250,
+    margin: 10,
+    resizeMode: 'contain',
+  },
+  button: {
+    width: '100%',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#556b2f'
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white'
+  },
 });

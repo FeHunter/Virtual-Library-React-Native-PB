@@ -1,11 +1,13 @@
 const Routes = {
   home: 'Home',
+  profile: 'Profile Page',
   bookList: 'Lista de livros',
   bookDetails: 'Mais detalhes',
   signInPage: 'SignIn',
   signUpPage: 'SignUp',
   gallary: 'Gallary',
-  registerImage: 'Registra Imagem'
+  registerImage: 'Registra Imagem',
+  aboutUs: 'Sobre nós',
 };
 
 export default Routes;

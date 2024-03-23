@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, Image, FlatList, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export function RegisterImage() {
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -36,26 +37,19 @@ export function RegisterImage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Take a picture</Text>
+      <Text style={styles.title}>Camera</Text>
       <Camera 
         style={styles.cameraView}
         type={type}
         ref={ref => setCamera(ref)}
       />
-      {/* {photoUri != null ?
-        <Image 
-          source={{ uri: photoUri }} 
-          style={styles.lastPic} 
-        />
-        :
-        ''
-      } */}
-      <Pressable onPress={takePicture}>
-        <Text style={styles.button}>Take Picture</Text>
+      <Pressable style={styles.button} onPress={takePicture}>
+        <Text style={styles.buttonText}>Tirar foto</Text>
+        <Icon name='camera-retro' size={20} color={'white'} />
       </Pressable>
 
       <View style={styles.gallary}>
-        <Text style={styles.title}>My Photos</Text>
+        <Text style={styles.title}>Fotos</Text>
         <FlatList
           data={photos}
           keyExtractor={(item, index) => index.toString()}
@@ -84,7 +78,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 100,
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: '#556b2f',
     resizeMode: 'contain',
   },
   lastPic: {
@@ -94,11 +88,16 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    height: 50,
-    backgroundColor: 'black',
-    color: 'white',
-    textAlign: 'center',
-    lineHeight: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#556b2f'
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white'
   },
   gallary: {
     width: '100%',

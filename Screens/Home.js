@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, Pressable, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ButtonCard } from '../components/Home/ButtonCard';
 import Routes from '../Assets/Routes';
@@ -14,6 +14,14 @@ export function Home ({navigation, route}){
             setLogado(userAuth);
         }, 1000);
     }, [userAuth])
+
+    function navigateToLoginOrProfile (){
+        if (logado){
+            navigation.navigate(Routes.profile)
+        }else{
+            navigation.navigate(Routes.signInPage)
+        }
+    }
 
     function navigateToGallary (){
         if (logado){
@@ -32,10 +40,10 @@ export function Home ({navigation, route}){
             </View>
             <ScrollView >
                 <View style={styles.body}>
-                    <ButtonCard label={"Profile"} icon={"user"} onPress={()=>{navigation.navigate(Routes.signInPage)}} />
+                    <ButtonCard label={"Profile"} icon={"user"} onPress={()=>{navigateToLoginOrProfile()}} />
                     <ButtonCard label={"Lista de livros"} icon={"book"} onPress={()=>{navigation.navigate(Routes.bookList)}} />
                     <ButtonCard label={"Galeria"} icon={"image"} onPress={()=>{navigateToGallary()}} />
-                    <ButtonCard label={"Sobre nós"} icon={"question"} onPress={()=>{alert("Serviço não disponivel no momento")}} />
+                    <ButtonCard label={"Sobre nós"} icon={"question"} onPress={()=>{navigation.navigate(Routes.aboutUs)}} />
                 </View>
             </ScrollView>
         </View>
