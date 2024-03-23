@@ -17,7 +17,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={Routes.registerImage}>
+        <Stack.Navigator initialRouteName={Routes.signInPage}>
             <Stack.Screen name={Routes.home} component={BookList} />
             <Stack.Screen name={Routes.bookDetails} component={BookCardDetails} />
             <Stack.Screen name={Routes.signInPage} component={SignIn} />
