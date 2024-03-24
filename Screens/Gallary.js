@@ -4,13 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Routes from '../Assets/Routes';
 import FirebaseRoutes from '../Assets/FirebaseRoutes';
 
-const emptyGallary = [
-  "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg",
-  "https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg",
-  "https://images.pexels.com/photos/574087/pexels-photo-574087.jpeg",
-];
-
-
 export function Gallary ({navigation}){
 
   const [gallary, setGallary] = useState([]);
@@ -18,20 +11,11 @@ export function Gallary ({navigation}){
   useEffect(()=>{
     fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`)
     .then(res => {return res.json()})
-    .then(res => res !== null ? setGallary(Object.values(res)) : setGallary(emptyGallary))
+    .then(res => { setGallary(res) })
     .catch(error => {
       console.log(error.message);
-      setGallary(emptyGallary);
     })
-  }, []);
-
-  function convertData(data){
-    const ids = Object.keys(data);
-    const objs = Object.values(data);
-    return objs.map((obj, i) => {
-      return { id: ids[i], ...obj };
-    });
-  }
+  }, [navigation]);
 
   // Orientation
   const [horizontal, setHorizontal] = useState(false);
@@ -46,9 +30,6 @@ export function Gallary ({navigation}){
     }
   }, []);
 
-  console.log(gallary);
-  console.log(convertData(gallary));
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Minha galeria</Text>
@@ -57,14 +38,18 @@ export function Gallary ({navigation}){
         <Icon name='camera' size={20} color={'white'} />
       </Pressable>
       <ScrollView contentContainerStyle={[styles.imgContainer, horizontal && { flexDirection: 'row' }]}>
-        <FlatList
-          data={gallary}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal={horizontal}
-          renderItem={ ({item}) => {
-            return <Image source={{uri: item}} style={styles.image} />
-          } }
-        />
+        { gallary === null ?
+          <Text>Galeria Vazia</Text>
+          :
+          <FlatList
+            data={gallary}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal={horizontal}
+            renderItem={ ({item}) => {
+              return <Image source={{uri: item}} style={styles.image} />
+            } }
+          />
+        }
       </ScrollView>
     </View>
   );

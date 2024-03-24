@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, Image, FlatList, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firebase from '../Assets/Firebase';
+import firebaseRoutes from '../Assets/FirebaseRoutes';
 
 export function RegisterImage() {
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -11,6 +13,13 @@ export function RegisterImage() {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
+    fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`)
+    .then(res => {return res.json()})
+    .then(res => setPhotos(res))
+    .then(res => console.log(res))
+    .catch(error => { console.log(error.message);
+  })
+
     getCameraPermission();
   }, []);
 
@@ -27,9 +36,28 @@ export function RegisterImage() {
     if (camera) {
       const picture = await camera.takePictureAsync();
       setPhotoUri(picture.uri);
-      setPhotos(photos => [...photos, picture.uri]);
+      setPhotos(prevPhotos => {
+        if (!Array.isArray(prevPhotos)) {
+          return [picture.uri];
+        }
+        return [...prevPhotos, picture.uri];
+      });
+      salvePictures();
     }
   };
+  
+  
+  const salvePictures = async () => {
+    fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(photos)
+      })
+      .then(res => console.log('enviado com sucesso'))
+      .catch(error => console.log(error.message));
+  }
 
   if (hasPermission === false) {
     return <Text>Acesso negado</Text>;
@@ -47,7 +75,6 @@ export function RegisterImage() {
         <Text style={styles.buttonText}>Tirar foto</Text>
         <Icon name='camera-retro' size={20} color={'white'} />
       </Pressable>
-
       <View style={styles.gallary}>
         <Text style={styles.title}>Fotos</Text>
         <FlatList
