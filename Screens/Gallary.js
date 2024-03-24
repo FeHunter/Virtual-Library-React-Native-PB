@@ -3,10 +3,12 @@ import { View, ScrollView, Text, Image, FlatList, StyleSheet, Pressable, Dimensi
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Routes from '../Assets/Routes';
 import FirebaseRoutes from '../Assets/FirebaseRoutes';
+import { ImageCard } from '../components/Gallary/ImageCard';
 
 export function Gallary ({navigation}){
 
   const [gallary, setGallary] = useState([]);
+  const [status, setStatus] = useState('');
 
   useEffect(()=>{
     fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`)
@@ -30,6 +32,34 @@ export function Gallary ({navigation}){
     }
   }, []);
 
+  function removeFoto (photo){
+      let update = [];
+      update = [... gallary];
+      if (update.indexOf(photo) > 0){
+        update.splice(update.indexOf(photo), 1)
+      }else {
+        update.shift();
+      }
+      setGallary(update);
+      setStatus('removendo...');
+
+      fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(update)
+        })
+        .then(res => {
+          setStatus("Foto removida");
+          setTimeout(() => {
+            setStatus('');
+          }, 1000);
+        })
+        .catch(error => console.log(error.message));
+  };
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Minha galeria</Text>
@@ -37,6 +67,7 @@ export function Gallary ({navigation}){
         <Text style={styles.buttonText}>Tirar novas fotos</Text>
         <Icon name='camera' size={20} color={'white'} />
       </Pressable>
+      {status !== '' && <Text>{status}</Text>}
       <ScrollView contentContainerStyle={[styles.imgContainer, horizontal && { flexDirection: 'row' }]}>
         { gallary === null ?
           <Text>Galeria Vazia</Text>
@@ -46,7 +77,7 @@ export function Gallary ({navigation}){
             keyExtractor={(item, index) => index.toString()}
             horizontal={horizontal}
             renderItem={ ({item}) => {
-              return <Image source={{uri: item}} style={styles.image} />
+              return <ImageCard image={item} removeFoto={removeFoto} />
             } }
           />
         }

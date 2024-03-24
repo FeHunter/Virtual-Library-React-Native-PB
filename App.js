@@ -20,7 +20,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={Routes.home}>
+        <Stack.Navigator initialRouteName={Routes.gallary}>
             <Stack.Screen name={Routes.home} component={Home} />
             <Stack.Screen name={Routes.profile} component={Profile} />
             <Stack.Screen name={Routes.bookList} component={BookList} />
