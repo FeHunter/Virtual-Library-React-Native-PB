@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Text, Image, FlatList, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { View, ScrollView, Text, Image, FlatList, StyleSheet, Pressable, Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Routes from '../Assets/Routes';
 import FirebaseRoutes from '../Assets/FirebaseRoutes';
@@ -106,17 +106,43 @@ const styles = StyleSheet.create({
     margin: 10,
     resizeMode: 'contain',
   },
-  button: {
-    width: '100%',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#556b2f'
-  },
   buttonText: {
     fontSize: 20,
     color: 'white'
   },
+  ...Platform.select({
+    android: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#556b2f',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    },
+    ios: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#191970',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    },
+    web: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#800020',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    }
+  })
 });

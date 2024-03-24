@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Image, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Pressable, Image, FlatList, StyleSheet, Platform } from 'react-native';
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from '../Assets/Firebase';
@@ -120,15 +120,6 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: 'contain',
   },
-  button: {
-    width: '100%',
-    paddingVertical: 10,
-    paddingHorizontal: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#556b2f'
-  },
   buttonText: {
     fontSize: 20,
     color: 'white'
@@ -142,4 +133,39 @@ const styles = StyleSheet.create({
     height: 400,
     resizeMode: 'contain',
   },
+  ...Platform.select({
+    android: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#556b2f',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    },
+    ios: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#191970',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    },
+    web: {
+      button: {
+        width: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 30,
+        backgroundColor: '#800020',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }
+    }
+  })
 });
