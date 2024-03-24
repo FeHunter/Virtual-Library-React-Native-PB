@@ -11,11 +11,12 @@ export function RegisterImage() {
   const [camera, setCamera] = useState(null);
   const [photoUri, setPhotoUri] = useState(null);
   const [photos, setPhotos] = useState([]);
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
     fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`)
     .then(res => {return res.json()})
-    .then(res => setPhotos(res))
+    .then(res => { res !== null ? setPhotos(res) : []})
     .then(res => console.log(res))
     .catch(error => { console.log(error.message);
   })
@@ -36,16 +37,16 @@ export function RegisterImage() {
     if (camera) {
       const picture = await camera.takePictureAsync();
       setPhotoUri(picture.uri);
-      setPhotos(prevPhotos => {
-        if (!Array.isArray(prevPhotos)) {
-          return [picture.uri];
-        }
-        return [...prevPhotos, picture.uri];
-      });
-      salvePictures();
+      setPhotos(prevPhotos => [...prevPhotos, picture.uri]);
     }
   };
-  
+
+  useEffect(()=>{
+    if (photos.length > 0){
+      setStatus(' - Salvando foto...');
+      salvePictures();
+    }
+  }, [photos])
   
   const salvePictures = async () => {
     fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`, {
@@ -55,7 +56,13 @@ export function RegisterImage() {
       },
       body: JSON.stringify(photos)
       })
-      .then(res => console.log('enviado com sucesso'))
+      .then(res => {
+        console.log('enviado com sucesso');
+        setStatus(" - Foto salva com sucesso");
+        setTimeout(() => {
+          setStatus('');
+        }, 1000);
+      })
       .catch(error => console.log(error.message));
   }
 
@@ -76,7 +83,7 @@ export function RegisterImage() {
         <Icon name='camera-retro' size={20} color={'white'} />
       </Pressable>
       <View style={styles.gallary}>
-        <Text style={styles.title}>Fotos</Text>
+        <Text style={styles.title}>Fotos {status}</Text>
         <FlatList
           data={photos}
           keyExtractor={(item, index) => index.toString()}
