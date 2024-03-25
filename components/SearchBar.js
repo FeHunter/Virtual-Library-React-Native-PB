@@ -1,12 +1,12 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Platform } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useState } from 'react';
 
 export function SearchBar({ setSearch, setSelectFilter }) {
   const [type, setType] = useState('');
-  const [selected, setSelected] = useState('Nenhum');
+  const [selected, setSelected] = useState('Sem filtro');
   const selectGenre = [
-    'Nenhum',
+    'Sem filtro',
     'Ficção Distópica',
     'Ficção de Crescimento',
     'Ficção Filosófica',
@@ -30,9 +30,7 @@ export function SearchBar({ setSearch, setSelectFilter }) {
 
   return (
     <View style={styles.searchBar}>
-      <Text style={styles.title}>Search</Text>
-      <View style={styles.inputArea}>
-        <TextInput
+      <TextInput
           style={styles.inputSearch}
           id="searchBar"
           type="text"
@@ -40,9 +38,7 @@ export function SearchBar({ setSearch, setSelectFilter }) {
           value={type}
           onChange={click}
         />
-        <View style={styles.dropdown}>
-          <Text style={styles.filterTitle}>Filter:</Text>
-          <SelectDropdown
+        <SelectDropdown
             buttonStyle={styles.button}
             data={selectGenre}
             defaultValue={selected}
@@ -50,52 +46,66 @@ export function SearchBar({ setSearch, setSelectFilter }) {
               setSelected(selectedItem);
               setSelection(selectedItem);
             }}
-          />
-        </View>
-      </View>
+        />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  searchBar: {
-    width: '100%',
-    backgroundColor: '#aea79c',
-  },
-  inputArea: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'white',
-  },
-  inputSearch: {
-    padding: 5,
-    fontSize: '1em',
-    border: '1px solid gray',
-    backgroundColor: '#aea79c',
-    color: 'white'
-  },
-  title: {
-    fontSize: '1.2em',
-    textAlign: 'center',
-  },
-  filterTitle: {
-    display: 1,
-    height: '100%',
-    alignItems: 'center',
-    textAlign: 'center',
-    fontSize: '1.1em',
-  },
-  button: {
-    width: '80%',
-    backgroundColor: '#aea79c',
-  },
-  dropdown: {
-    flex: 1,
-    flexDirection: 'row',
-    width: '100%',
-    height: 100,
-    justifyContent: 'center',
-    backgroundColor: '#aea79c',
-  },
+  ...Platform.select({
+    android: {
+      searchBar: {
+        width: '100%',
+      },
+      inputSearch: {
+        padding: 5,
+        fontSize: '1em',
+        border: '1px solid gray',
+        color: 'white',
+        width: '60%',
+        backgroundColor: '#556b2f',
+      },
+      button: {
+        width: '40%',
+        backgroundColor: '#556b2f',
+      },
+    },
+    ios: {
+      searchBar: {
+        width: '100%',
+      },
+      inputSearch: {
+        padding: 5,
+        fontSize: '1em',
+        border: '1px solid gray',
+        color: 'white',
+        width: '60%',
+        backgroundColor: '#191970',
+      },
+      button: {
+        width: '40%',
+        backgroundColor: '#191970',
+      },
+    },
+    web: {
+      searchBar: {
+        width: '100%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+      },
+      inputSearch: {
+        padding: 5,
+        fontSize: '1em',
+        border: '1px solid gray',
+        color: 'white',
+        width: '60%',
+        backgroundColor: '#800020',
+      },
+      button: {
+        width: '40%',
+        backgroundColor: '#800020',
+      },
+    }
+  }),
 });
 

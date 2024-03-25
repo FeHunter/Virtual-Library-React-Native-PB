@@ -1,10 +1,9 @@
-import { View, Pressable, Text, Image, StyleSheet } from 'react-native';
+import { View, Pressable, Text, Image, StyleSheet, Platform } from 'react-native';
 import Routes from '../Assets/Routes';
 
 export function BookCard({ book, navigation }) {
   return (
-    <View style={styles.container}>
-      <Pressable
+    <Pressable
         style={styles.card}
         onPress={() =>
           navigation.navigate(Routes.bookDetails, { book, navigation })
@@ -20,26 +19,18 @@ export function BookCard({ book, navigation }) {
         <Text style={styles.synopsis}>Pages: {book?.pages}</Text>
         <Text style={styles.price}>R${book?.price}</Text>
       </Pressable>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: '100%',
-    backgroundColor: 'white',
-  },
   card: {
     flex: 1,
     alignItems: 'space-between',
-    width: '80%',
-    height: 'auto',
-    marginVertical: 10,
+    width: 400,
+    height: 400,
+    margin: 10,
     borderRadius: 10,
-    backgroundColor: '#d4cfca',
+    backgroundColor: '#a69b6f',
   },
   title: {
     fontSize: '1.5em',

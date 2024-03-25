@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 170,
+    height: 400,
     marginVertical: 5,
     resizeMode: 'center',
   },
