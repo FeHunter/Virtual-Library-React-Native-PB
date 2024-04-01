@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, Image, FlatList, StyleSheet, Platform } from 'react-native';
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import firebase from '../Assets/Firebase';
-import firebaseRoutes from '../Assets/FirebaseRoutes';
+import app from '../Assets/Firebase';
+import { getStorage, ref, uploadString } from 'firebase/storage';
 
 export function RegisterImage() {
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -14,15 +14,20 @@ export function RegisterImage() {
   const [status, setStatus] = useState('');
 
   useEffect(() => {
-    fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`)
-    .then(res => {return res.json()})
-    .then(res => { res !== null ? setPhotos(res) : []})
-    .then(res => console.log(res))
-    .catch(error => { console.log(error.message);
-  })
-
+    getPhotos();
     getCameraPermission();
   }, []);
+
+  async function getPhotos (){
+    try {
+      const firebaseStorage = getStorage(app);
+      const photsRef = ref(firebaseStorage);
+      const list = await listAll(photsRef);
+      setPhotos(list);
+    }catch(error){
+      console.log(error.message);
+    }
+  }
 
   const getCameraPermission = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -38,32 +43,29 @@ export function RegisterImage() {
       const picture = await camera.takePictureAsync();
       setPhotoUri(picture.uri);
       setPhotos(prevPhotos => [...prevPhotos, picture.uri]);
+      savePhoto(picture.uri);
     }
   };
 
   useEffect(()=>{
     if (photos.length > 0){
       setStatus(' - Salvando foto...');
-      salvePictures();
     }
   }, [photos])
   
-  const salvePictures = async () => {
-    fetch(`${firebaseRoutes.mainURL}${firebaseRoutes.gallary}.json`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(photos)
-      })
-      .then(res => {
-        console.log('enviado com sucesso');
-        setStatus(" - Foto salva com sucesso");
-        setTimeout(() => {
-          setStatus('');
-        }, 1000);
-      })
-      .catch(error => console.log(error.message));
+  // Enviar foto para storage do firebase
+  async function savePhoto (photo){
+    try {
+      const firebaseStorage = getStorage(app);
+      const photoRef = ref(firebaseStorage, `Gallary Pictures ${new Date().getTime()}.png`);
+      await uploadString(photoRef, photo, "data_url");
+      setStatus("Foto salva");
+      setTimeout(() => {
+        setStatus("---");
+      }, 1000);
+    }catch (error){
+      console.log(error.message);
+    }
   }
 
   if (hasPermission === false) {

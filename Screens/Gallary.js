@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Routes from '../Assets/Routes';
 import FirebaseRoutes from '../Assets/FirebaseRoutes';
 import { ImageCard } from '../components/Gallary/ImageCard';
+import app from '../Assets/Firebase';
+import { getStorage, ref, getDownloadURL, listAll, deleteObject } from 'firebase/storage';
 
 export function Gallary ({navigation}){
 
@@ -11,13 +13,19 @@ export function Gallary ({navigation}){
   const [status, setStatus] = useState('');
 
   useEffect(()=>{
-    fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`)
-    .then(res => {return res.json()})
-    .then(res => { setGallary(res) })
-    .catch(error => {
-      console.log(error.message);
-    })
+    getPhotos();
   }, [navigation]);
+
+  async function getPhotos (){
+    try {
+      const firebaseStorage = getStorage(app);
+      const photsRef = ref(firebaseStorage);
+      const list = await listAll(photsRef);
+      setGallary(list);
+    }catch(error){
+      console.log(error.message);
+    }
+  }
 
   // Orientation
   const [horizontal, setHorizontal] = useState(false);
