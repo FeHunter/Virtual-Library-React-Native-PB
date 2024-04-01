@@ -19,10 +19,11 @@ export function Gallary ({navigation}){
   async function getPhotos (){
     try {
       const firebaseStorage = getStorage(app);
-      const photsRef = ref(firebaseStorage);
-      const list = await listAll(photsRef);
-      setGallary(list);
-    }catch(error){
+      const photosRef = ref(firebaseStorage);
+      const listResult = await listAll(photosRef);
+      const photoUrls = await Promise.all(listResult.items.map((item) => getDownloadURL(item)));
+      setGallary(photoUrls);
+    } catch (error) {
       console.log(error.message);
     }
   }
@@ -40,33 +41,16 @@ export function Gallary ({navigation}){
     }
   }, []);
 
-  function removeFoto (photo){
-      let update = [];
-      update = [... gallary];
-      if (update.indexOf(photo) > 0){
-        update.splice(update.indexOf(photo), 1)
-      }else {
-        update.shift();
-      }
-      setGallary(update);
-      setStatus('removendo...');
-
-      fetch(`${FirebaseRoutes.mainURL}${FirebaseRoutes.gallary}.json`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(update)
-        })
-        .then(res => {
-          setStatus("Foto removida");
-          setTimeout(() => {
-            setStatus('');
-          }, 1000);
-        })
-        .catch(error => console.log(error.message));
+  const removeFoto = async (photoUrl) => {
+    try {
+      const firebaseStorage = getStorage(app);
+      const photoRef = ref(firebaseStorage, photoUrl); // A URL do Firebase Storage é o caminho completo do arquivo
+      await deleteObject(photoRef);
+      getPhotos(); // Atualiza a lista de fotos após deletar a foto
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-
 
   return (
     <View style={styles.container}>

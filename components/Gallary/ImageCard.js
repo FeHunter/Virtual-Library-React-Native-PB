@@ -2,7 +2,6 @@ import { View, StyleSheet, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export function ImageCard ({image, removeFoto}){
-
     function remove (){
         removeFoto(image)
     }
