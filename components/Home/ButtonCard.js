@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
                 margin: 10,
             },
             cardText: {
-                fontSize: 18,
+                fontSize: '1.2em',
                 textAlign: 'center',
                 color: 'white'
             },
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
                 margin: 10,
             },
             cardText: {
-                fontSize: 18,
+                fontSize: '1.2em',
                 textAlign: 'center',
                 color: 'white'
             },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
                 margin: 10,
             },
             cardText: {
-                fontSize: 18,
+                fontSize: '1.2em',
                 textAlign: 'center',
                 color: 'white'
             },

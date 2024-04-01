@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   status: {
-    fontSize: 20,
+    fontSize: '1.2em',
     marginVertical: 20,
     color: 'gray',
   },

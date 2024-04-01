@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     textWarning: {
-        fontSize: 30,
+        fontSize: '2.1em',
         color: 'red',
         textAlign: 'center',
     },

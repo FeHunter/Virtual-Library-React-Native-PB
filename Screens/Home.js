@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     title: {
-        fontSize: 20,
+        fontSize: '2em',
         textAlign: 'center',
         marginVertical: 5,
         color: 'white',
     },
     logadoText: {
-        fontSize: 14,
+        fontSize: '1em',
         color: 'whitesmoke',
         fontStyle: 'italic',
     },

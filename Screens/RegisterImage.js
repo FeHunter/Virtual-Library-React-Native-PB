@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   title: {
-    fontSize: 16,
+    fontSize: '1.2em',
     textAlign: 'center',
     marginVertical: 5,
   },
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: '1.3em',
     color: 'white'
   },
   gallary: {

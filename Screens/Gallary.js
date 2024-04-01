@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    fontSize: 20,
+    fontSize: '2em',
     textAlign: 'center',
     marginVertical: 5,
   },
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: '2em',
     color: 'white'
   },
   ...Platform.select({
