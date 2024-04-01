@@ -3,7 +3,7 @@ import { View, Text, Pressable, Image, FlatList, StyleSheet, Platform } from 're
 import { Camera } from 'expo-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import app from '../Assets/Firebase';
-import { getStorage, ref, getDownloadURL, listAll, deleteObject } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL, listAll, deleteObject, uploadString } from 'firebase/storage';
 
 export function RegisterImage() {
   const [type, setType] = useState(Camera.Constants.Type.back);
