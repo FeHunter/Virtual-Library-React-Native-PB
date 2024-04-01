@@ -12,7 +12,7 @@ export function BookList({ navigation }) {
 
   // Filter
   const [search, setSearch] = useState('');
-  const [selectFilter, setSelectFilter] = useState('Nenhum');
+  const [selectFilter, setSelectFilter] = useState('Sem filtro');
   function getTerm(searchTerm) {
     setSearch(searchTerm);
   }
@@ -37,7 +37,7 @@ export function BookList({ navigation }) {
   }
 
   useEffect(() => {
-    if (selectFilter !== 'Nenhum') {
+    if (selectFilter !== 'Sem filtro') {
       setSearch(selectFilter);
       FilterBooks();
     } else {
@@ -56,6 +56,7 @@ export function BookList({ navigation }) {
     });
     return (
       <FlatList
+        contentContainerStyle={styles.listView}
         data={updateList}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
@@ -68,6 +69,7 @@ export function BookList({ navigation }) {
   let showBooks =
     books.length > 0 && search.length === 0 ? (
       <FlatList
+        contentContainerStyle={styles.listView}
         data={books}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
@@ -81,7 +83,7 @@ export function BookList({ navigation }) {
   return (
     <View style={styles.container}>
       <SearchBar setSearch={getTerm} setSelectFilter={getSelectedTerm} />
-      <ScrollView style={styles.listView}>{showBooks}</ScrollView>
+      <ScrollView style={{height: 700, width: '100%'}}>{showBooks}</ScrollView>
     </View>
   );
 }
@@ -94,8 +96,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ebe6ea',
   },
   listView: {
-    width: '100%',
-    height: 200,
+    width: '95%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#ebe6ea',
   },
 });

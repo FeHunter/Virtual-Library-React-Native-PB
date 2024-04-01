@@ -38,6 +38,30 @@ export function RegisterImage() {
     }
   };
 
+  // Enviar foto para storage do firebase
+  async function savePhoto (){
+    try {
+      const firebaseStorage = getStorage(firebase);
+      const photoRef = ref(firebaseStorage, `Gallary Pictures ${new Date().getTime}.png`);
+      const uploadResult = await uploadString(photoRef, photoUri, {
+        encoding: 'base64',
+        contentType: 'image/jpeg'
+    });
+    }catch (error){
+      console.log(error.message);
+    }
+  }
+
+  async function getPhotos (){
+    try {
+      const firebaseStorage = getStorage(firebase);
+      const photsRef = ref(firebaseStorage);
+      const list = await listAll(photsRef);
+    }catch(error){
+      console.log(error.message);
+    }
+  }
+
   const takePicture = async () => {
     if (camera) {
       const picture = await camera.takePictureAsync();
