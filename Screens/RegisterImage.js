@@ -27,27 +27,13 @@ export function RegisterImage() {
     }
   };
 
-  // Enviar foto para storage do firebase
-  async function savePhoto (){
-    try {
-      const firebaseStorage = getStorage(firebase);
-      const photoRef = ref(firebaseStorage, `Gallary Pictures ${new Date().getTime}.png`);
-      const uploadResult = await uploadString(photoRef, photoUri, {
-        encoding: 'base64',
-        contentType: 'image/jpeg'
-    });
-    }catch (error){
-      console.log(error.message);
-    }
-  }
-
   async function getPhotos (){
     try {
       const firebaseStorage = getStorage(app);
       const photosRef = ref(firebaseStorage);
       const listResult = await listAll(photosRef);
       const photoUrls = await Promise.all(listResult.items.map((item) => getDownloadURL(item)));
-      setPhotos(photoUrls);
+      savePhoto(photoUrls);
     } catch (error) {
       console.log(error.message);
     }
