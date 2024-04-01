@@ -18,17 +18,6 @@ export function RegisterImage() {
     getCameraPermission();
   }, []);
 
-  async function getPhotos (){
-    try {
-      const firebaseStorage = getStorage(app);
-      const photsRef = ref(firebaseStorage);
-      const list = await listAll(photsRef);
-      setPhotos(list);
-    }catch(error){
-      console.log(error.message);
-    }
-  }
-
   const getCameraPermission = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
     if (status === 'granted') {
@@ -54,10 +43,12 @@ export function RegisterImage() {
 
   async function getPhotos (){
     try {
-      const firebaseStorage = getStorage(firebase);
-      const photsRef = ref(firebaseStorage);
-      const list = await listAll(photsRef);
-    }catch(error){
+      const firebaseStorage = getStorage(app);
+      const photosRef = ref(firebaseStorage);
+      const listResult = await listAll(photosRef);
+      const photoUrls = await Promise.all(listResult.items.map((item) => getDownloadURL(item)));
+      setPhotos(photoUrls);
+    } catch (error) {
       console.log(error.message);
     }
   }
